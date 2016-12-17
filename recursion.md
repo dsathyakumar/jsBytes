@@ -18,11 +18,11 @@ But for the purpose of demonstrating recursion issues, and making it easier to u
 
 `````javascript
 function sum(x, y) {
-if (y > 0) {
-     return sum(x + 1, y - 1);
-} else {
-     return x;
-}
+     if (y > 0) {
+          return sum(x + 1, y - 1);
+     } else {
+          return x;
+     }
 }
 sum(1, 10);
 `````````````````
@@ -67,11 +67,11 @@ Unfortunately the JavaScript doesn't implement this optimization. Note: ES 6 has
 
 ````javascript
 function sum(x, y) {
-if (y > 0) {
-     return sum(x + 1, y - 1);
-} else {
-     return x;
-}
+     if (y > 0) {
+          return sum(x + 1, y - 1);
+     } else {
+          return x;
+     }
 }
 sum(1, 10000);
 `````
@@ -99,21 +99,21 @@ Consider this …
 
 ``````javascript
 function trampoline(f) {
-while (f && f instanceof Function) {
-     f = f();
-}
-          return f;
+     while (f && f instanceof Function) {
+          f = f();
+     }
+               return f;
 }
 
 function sum(x, y) {
-function recur(x, y) {
-if (y > 0) {
-     return recur.bind(null, x + 1, y - 1);
-} else {
-     return x;
-}
-}
-return trampoline(recur.bind(null, x, y));
+     function recur(x, y) {
+          if (y > 0) {
+               return recur.bind(null, x + 1, y - 1);
+          } else {
+               return x;
+          }
+     }
+     return trampoline(recur.bind(null, x, y));
 }
 
 sum(1, 10);
