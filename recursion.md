@@ -270,4 +270,5 @@ sum(1, 100000)
       will end returning whatever value is stored inside the value variable (which in this example is the value of x).
 
 **You can now perform recursion in JS without any issues with the call stack !!**
+
 *Note* : The trampoline pattern was first written by *Irakli Gozalishvili*
