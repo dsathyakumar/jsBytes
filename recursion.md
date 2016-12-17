@@ -1,6 +1,6 @@
 # PART -1 : The problem
 
-## The problem of Recursion in Javascript :
+### The problem of Recursion in Javascript :
 
 - In JS, if a function calls itself recursively then the JavaScript engine has to create what's called a new ‘stack’ for every such recursive call.
 - As mentioned in the article on execution context, every new function invocation will create a new function context.
