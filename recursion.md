@@ -11,7 +11,7 @@
 - Here in lies the problem: creating stacks is expensive, as the JS engine can only create as many stacks as it has memory available.
 - If we write a function that recursively calls itself many times, then we'll find that we can exhaust the memory allocation and trigger an error.
 
-Let's look at some code that demonstrates this problem.
+### Let's look at some code that demonstrates this problem.
 
 The following function sum simply adds 2 numbers together.
 But for the purpose of demonstrating recursion issues, and making it easier to understand, the sum function which could have been written in a straight forward approach has been written in a recursive way :
@@ -53,7 +53,7 @@ This will cause an error, if we create a stack deep enough (such as we did with 
 JS engine will throw a Maximum call stack size exceeded error.
 This problem can occur very easily.
 
-Don’t other languages face this issue ?
+### Don’t other languages face this issue ?
 
 In other programming languages the recursion could be rewritten in such a way that the engine would recognize a recursive execution was happening and optimize the code
 internally into a loop form. This is called a "tail call optimisation" (TCO).
