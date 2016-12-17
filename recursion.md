@@ -132,39 +132,39 @@ sum(1, 10);
 
 ### The detailed code breaks down as below :-
 
-=> We call sum(1, 10).
+- We call sum(1, 10).
 
-=> Our sum function ultimately returns a value. In this case whatever is returned by calling the trampoline function.
+- Our sum function ultimately returns a value. In this case whatever is returned by calling the trampoline function.
 
-=> The trampoline function accepts a reference to a function as its argument
+- The trampoline function accepts a reference to a function as its argument
      it’s important to understand it needs a reference to a function;
      Because doing return trampoline(recur(x, y)) wouldn't work as that would end up passing the result of calling recur(x, y) to the trampoline function.
 
-=> So we use Function#bind to pass a reference to the recur function.
+- So we use Function#bind to pass a reference to the recur function.
      We use null as the this binding because it doesn't matter what the context the function executes in as we don't use the function as a constructor here in this case.
 
-=> When we execute sum(1, 10) we pass the reference to the internal recur method to the trampoline function, as input argument.
+- When we execute sum(1, 10) we pass the reference to the internal recur method to the trampoline function, as input argument.
 
-=> The trampoline function checks if we passed a function and if so, executes the function and store its return value inside the f variable.
+- The trampoline function checks if we passed a function and if so, executes the function and store its return value inside the f variable.
 
-=> If what we pass into the trampoline function isn't a function then we assume it’s the end (i.e. accumulated) value and we return the value straight back to the sum
+- If what we pass into the trampoline function isn't a function then we assume it’s the end (i.e. accumulated) value and we return the value straight back to the sum
 function which returns that value as the accumulated value.
 
-=> Inside the recur function we check to see if y is greater than zero, and if it is we modify the x and y values to x+1 and y-1 and then return another function reference to the
+- Inside the recur function we check to see if y is greater than zero, and if it is we modify the x and y values to x+1 and y-1 and then return another function reference to the
       recur function but this time with the modified x and y values, that is, x+1 and y-1.
 
-=> Inside the trampoline function, the newly referenced function is assigned to the f variable and the while loop on its next iteration checks to see if f is indeed a
+- Inside the trampoline function, the newly referenced function is assigned to the f variable and the while loop on its next iteration checks to see if f is indeed a
 function or not.
 
-=> If it is (which it would be in this instance) we again execute the function (which is now recur(2, 9)) and the whole process starts again.
+- If it is (which it would be in this instance) we again execute the function (which is now recur(2, 9)) and the whole process starts again.
 
-=> This goes on till we reach the point where y is set to zero.
+- This goes on till we reach the point where y is set to zero.
 
-=> Then when the trampoline function executes the function reference (recur), inside the next while loop iteration, and inside the if conditional fails
+- Then when the trampoline function executes the function reference (recur), inside the next while loop iteration, and inside the if conditional fails
      (as y is now zero and no longer greater than zero) and so we return the accumulated x value, instead of a function reference; which then gets sent back and stored in the f
      variable inside the trampoline function.
 
-=> On the next iteration of the while loop, f is now a value and not a function and so the while loop ends and the accumulated value is returned to the sum function
+- On the next iteration of the while loop, f is now a value and not a function and so the while loop ends and the accumulated value is returned to the sum function
      which returns that as its accumulated value.
 
 ## PART -3 : A generic pattern (which implements trampolining to realize tail call optimization. It wraps any code into itself)
@@ -211,62 +211,62 @@ sum(1, 100000)
 
 ### EXPLANATION:
 
-=> We store the result of calling tco (wrapped around our recursive function logic) into the sum variable, which now has the accumulator function, which is the
+- We store the result of calling tco (wrapped around our recursive function logic) into the sum variable, which now has the accumulator function, which is the
      result of tco function execution.
 
-=> The sum variable is now a function expression that when called (e.g. sum(1, 10)) will execute the accumulator function that tco returned.
+- The sum variable is now a function expression that when called (e.g. sum(1, 10)) will execute the accumulator function that tco returned.
 
-=> The accumulator function is a closure (meaning when we call sum the accumulator will have access to the variables defined inside of tco -> value, active and
+- The accumulator function is a closure (meaning when we call sum the accumulator will have access to the variables defined inside of tco -> value, active and
       accumulated; as well as our own code which is accessible via the identifier f).
 
-=> When we call sum for the first time (e.g. sum(1, 10)) we indirectly execute accumulator.
+- When we call sum for the first time (e.g. sum(1, 10)) we indirectly execute accumulator.
 
-=> The first thing we do inside of accumulator is push the arguments object (an Array-like object) into the accumulated Array (so the accumulated[ ] will now
+- The first thing we do inside of accumulator is push the arguments object (an Array-like object) into the accumulated Array (so the accumulated[ ] will now
      have a length of 1).
 
-=> It's worth knowing that the accumulated Array always has a max of 1 item inside of it at any point in time. And is also symbolic to the fact that although we
+- It's worth knowing that the accumulated Array always has a max of 1 item inside of it at any point in time. And is also symbolic to the fact that although we
      recursively execute, we always create only one stack entry at any point in time within the while loop.
 
-=> The active variable by default is false. So as accumulator is called for the first time, we end up inside the if conditional, and then reset active to true.
+- The active variable by default is false. So as accumulator is called for the first time, we end up inside the if conditional, and then reset active to true.
 
-=> Now we get to a while loop (we're still calling functions recursively, as you'll see in a moment; but this is a very clean loop compared to an ugly for loop with lots
+- Now we get to a while loop (we're still calling functions recursively, as you'll see in a moment; but this is a very clean loop compared to an ugly for loop with lots
      of operators/operands).
 
-=> The while loop simply checks whether the accumulated Array has any content. If it does then we call the f function (our recursive logic function) and pass
+- The while loop simply checks whether the accumulated Array has any content. If it does then we call the f function (our recursive logic function) and pass
      through the arguments that were inside accumulated[0] (for the first run of this function that would've been [1, 10]).
 
-=> When we pass the contents of accumulated[0] we use the shift Array method to actually remove it from the accumulated Array so it now has a length of zero.
+- When we pass the contents of accumulated[0] we use the shift Array method to actually remove it from the accumulated Array so it now has a length of zero.
 
-=> If we ignore for a moment the code inside the while loop; on the next iteration of this while loop the condition of accumulated.length will fail and so we would
+- If we ignore for a moment the code inside the while loop; on the next iteration of this while loop the condition of accumulated.length will fail and so we would
      end up setting active to false and ultimately return to sum the value of the variable value. But, this won’t happen. This is where it gets confusing! Hold on!
 
-=> The f function is our own code. Our own code which is invoked by the accumulator the calls the sum function again (which indirectly calls the accumulator
+- The f function is our own code. Our own code which is invoked by the accumulator the calls the sum function again (which indirectly calls the accumulator
      function again).
 
-=> If our code returns x then the while loop will stop. Lets get to this case later.
+- If our code returns x then the while loop will stop. Lets get to this case later.
 
-=> If our code can't return x (notice our code has a conditional check to see if y is greater than zero, if it is then we return x, otherwise...)
+- If our code can't return x (notice our code has a conditional check to see if y is greater than zero, if it is then we return x, otherwise...)
      we call sum again and pass through modified arguments, which internally re-invokes accumulator again.
 
-=> This time when we call sum & accumulator in turn, we don't get inside of the if-conditional because active is already set to true.
+- This time when we call sum & accumulator in turn, we don't get inside of the if-conditional because active is already set to true.
 
-=> So the purpose of calling sum & accumulator in turn, from inside our own code is simply to allow us to store the newly modified arguments inside the
+- So the purpose of calling sum & accumulator in turn, from inside our own code is simply to allow us to store the newly modified arguments inside the
      accumulated Array. That is in this case we would store [2,9]
 
-=> The sum function then returns undefined (as we weren't able to move into the if conditional)
+- The sum function then returns undefined (as we weren't able to move into the if conditional)
 
-=> The flow of control then throws us back into the original while loop inside our original accumulator call (that's still going, it hasn't stopped yet) and undefined is
+- The flow of control then throws us back into the original while loop inside our original accumulator call (that's still going, it hasn't stopped yet) and undefined is
      what's stored into the value variable.
 
-=> At this point the accumulated Array has once again got some content and so the while loop's condition passes once more and the loop iterative execution
+- At this point the accumulated Array has once again got some content and so the while loop's condition passes once more and the loop iterative execution
      continues.
 
-=> Now, at some point our code is going to call sum with the y argument set to zero meaning that when the accumulator function calls our
+- Now, at some point our code is going to call sum with the y argument set to zero meaning that when the accumulator function calls our
      code the condition y > 0 will fail and so we return the value of x (which has been incremented each time along the way).
      No extra arguments are pushed into the accumulated array. This is because, sum is not called and therefore, in turn accumulator is not called.
 
-=> When that happens, x is returned and assigned as the value to the value variable, and so our code never called sum and thus the
+- When that happens, x is returned and assigned as the value to the value variable, and so our code never called sum and thus the
      accumulated Array is never modified again; meaning the while loop condition inside the accumulator function will fail and thus the accumulator function
       will end returning whatever value is stored inside the value variable (which in this example is the value of x).
 
-You can now perform recursion in JS without any issues with the call stack !!
+**You can now perform recursion in JS without any issues with the call stack !!**
