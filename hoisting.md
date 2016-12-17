@@ -326,6 +326,9 @@ function bar() {
     }
     baz(); // this runs. As its a function declaration.
 }
+````````
+
+`````javascript
 bar();
 foo;         // "bar"
 bam;         // "yay"
