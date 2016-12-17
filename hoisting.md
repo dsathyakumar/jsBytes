@@ -61,7 +61,7 @@ This execution context object is created in 2 stages :
 
       **When does this occur ? :** 
         - while the code executes
-      **##### What it does :** 
+      ** What it does :** 
         - This assigns values to variables, references to functions, executes code
 
 #### What is this VO (variable object) or also called AO (Activation object) contain ?
@@ -322,7 +322,7 @@ function bar() {
     var foo = "baz”; // new property foo is created inside this function and is assigned a value of “baz"
     function baz(foo) { //copies the value into the arguments object variable instead of creating or overriding the global foo
          foo = "bam";
-         bam = "yay”; //global variable creation & gets a value “yay” that can be accessed anywhere now
+         bam = "yay”; //global variable creation & gets a value 'yay' that can be accessed anywhere now
     }
     baz(); // this runs. As its a function declaration.
 }
