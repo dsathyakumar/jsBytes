@@ -49,6 +49,7 @@ So, every time a function is invoked. What happens ?
 This execution context object is created in 2 stages :
 
 #### A) Creation Stage
+
       **When does this occur ? :** 
         - when the function is called, but before execution
       **What it does**
@@ -322,7 +323,7 @@ function bar() {
     var foo = "baz”; // new property foo is created inside this function and is assigned a value of “baz"
     function baz(foo) { //copies the value into the arguments object variable instead of creating or overriding the global foo
          foo = "bam";
-         bam = "yay”; //global variable creation & gets a value 'yay' that can be accessed anywhere now
+         bam = "yay"; //global variable creation & gets a value 'yay' that can be accessed anywhere now
     }
     baz(); // this runs. As its a function declaration.
 }
