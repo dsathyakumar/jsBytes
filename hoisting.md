@@ -49,9 +49,9 @@ So, every time a function is invoked. What happens ?
 This execution context object is created in 2 stages :
 
 #### A) Creation Stage
-      ##### When does this occur ? : 
+      **When does this occur ? :** 
         - when the function is called, but before execution
-      ##### What it does
+      **What it does**
              This is to do 3 things:
               1) Determine / created the scope chain
               2) Create the Activation object (or) Variable object that contains the FAV (Function declaration references, Arguments object, Variable references)
@@ -59,9 +59,10 @@ This execution context object is created in 2 stages :
 
 #### B) Activation Stage (or) execution stage
 
-      ##### When does this occur ? : 
+      **When does this occur ? :** 
         - while the code executes
-      ##### What it does : This assigns values to variables, references to functions, executes code
+      **##### What it does :** 
+        - This assigns values to variables, references to functions, executes code
 
 #### What is this VO (variable object) or also called AO (Activation object) contain ?
 It is filled in the order of FAV (Arguments, functions, variables) & contains the
@@ -319,14 +320,12 @@ var foo = "bar";
 
 function bar() {
     var foo = "baz”; // new property foo is created inside this function and is assigned a value of “baz"
-
-    function baz(foo) { //copies the value into the arguments object variable instead of creating / overriding the global foo
+    function baz(foo) { //copies the value into the arguments object variable instead of creating or overriding the global foo
          foo = "bam";
          bam = "yay”; //global variable creation & gets a value “yay” that can be accessed anywhere now
     }
     baz(); // this runs. As its a function declaration.
 }
-
 bar();
 foo;         // "bar"
 bam;         // "yay"
@@ -516,6 +515,7 @@ Upto ES5, there was only global & function scope, in JS. With ES6, JS lets you h
 So, rules are :
 
 1) let expansion in the entire block protects variables from modification by outer scopes, even before declaration.
+
 2) Generate reference errors when accessing a let variables in temporary dead zone
 
 So,
