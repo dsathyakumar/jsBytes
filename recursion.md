@@ -29,28 +29,28 @@ sum(1, 10);
 
 ### The code flow:
 
-=> While calling sum, we pass in 2 numbers which are assigned to the parameters x and y (in this instance we pass 1 and 10) // sum(1, 10);
+- While calling sum, we pass in 2 numbers which are assigned to the parameters x and y (in this instance we pass 1 and 10) // sum(1, 10);
 
-=> We check if (y is greater than 0). If y is greater than 0 (which we know it is) then, we recursively call sum again but, if (y > 0) {
+- We check if (y is greater than 0). If y is greater than 0 (which we know it is) then, we recursively call sum again but, if (y > 0) {
      this time modify the arguments so that x is incremented by 1 (x+1) and y is reduced by 1 (y-1) // sum(x + 1, y - 1);
 
-=> When the sum function is next called we're passing 2 and 9.
+- When the sum function is next called we're passing 2 and 9.
 
-=> At this point we're now inside a new invocation of the sum function, but the first call to sum has yet to finish (as we didn't reach the end of the function,
+- At this point we're now inside a new invocation of the sum function, but the first call to sum has yet to finish (as we didn't reach the end of the function,
      the focus moved to another function being executed - which in this case was sum again)
 
-=> Also at this point the JS engine has 2 stacks. One for the point in time when we passed in arguments sum(1 and 10), and now (as it has to remember 2 and 9).
+- Also at this point the JS engine has 2 stacks. One for the point in time when we passed in arguments sum(1 and 10), and now (as it has to remember 2 and 9).
 
-=> The JS engine has to remember the previous arguments 1 and 10 because, once this second sum execution finishes, the previous call will be popped out of the
+- The JS engine has to remember the previous arguments 1 and 10 because, once this second sum execution finishes, the previous call will be popped out of the
       stack and the control will go back to the previous entry in the stack, and we'll end up back in the first execution context.
 
-=>  As we can see, in the above code the JS engine has to create a new stack for each recursive call.
+- As we can see, in the above code the JS engine has to create a new stack for each recursive call.
 
 For a small sum of 1 and 10 this is all fine;
 Now assume if we try to sum (1, 100000) then that'll require more stacks to be created, than the memory that has been allocated to us for stacks creation.
 
 This will cause an error, if we create a stack deep enough (such as we did with sum(1, 100000)) then the
-JS engine will throw a Maximum call stack size exceeded error.
+JS engine will throw a **Maximum call stack size exceeded error**.
 This problem can occur very easily.
 
 ### Don’t other languages face this issue ?
